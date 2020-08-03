@@ -1,4 +1,14 @@
 # Laboratorio 5 DBP
 
 ***ScreenShoots***
-  ![alt text](https://github.com/labt1/lab5/blob/master/Captura1.PNG)
+
+  Captura 1:
+      ![alt text](https://github.com/labt1/lab5/blob/master/Captura1.PNG)
+      
+      
+  Captura 2:
+      https://github.com/labt1/lab5/blob/master/Captura2.PNG
+      
+      
+  Captura 3:
+      https://github.com/labt1/lab5/blob/master/Captura3.PNG
