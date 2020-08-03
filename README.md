@@ -7,8 +7,8 @@
       
       
   Captura 2:
-      https://github.com/labt1/lab5/blob/master/Captura2.PNG
+      ![alt text](https://github.com/labt1/lab5/blob/master/Captura2.PNG)
       
       
   Captura 3:
-      https://github.com/labt1/lab5/blob/master/Captura3.PNG
+      ![alt text](https://github.com/labt1/lab5/blob/master/Captura3.PNG)
