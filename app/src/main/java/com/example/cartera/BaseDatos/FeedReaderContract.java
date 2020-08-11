@@ -9,7 +9,7 @@ public final class FeedReaderContract {
     // make the constructor private.
     private FeedReaderContract() {}
 
-    /* Inner class that defines the table contents */
+    /* Inner class that defines the table contents  */
     public static class FeedEntry implements BaseColumns {
         public static final String TABLE_NAME = "CLIENTE";
         public static final String COLUMN_NOMBRE = "NOMBRE";
