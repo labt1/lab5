@@ -1,44 +1,44 @@
 package com.example.cartera;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.cartera.BaseDatos.DatosOpenHelper;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.cartera.BaseDatos.FeedReaderContract;
+import com.example.cartera.BaseDatos.FeedReaderDbHelper;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class ActNuevoCliente extends AppCompatActivity {
-    private EditText edtNombre;
-    private EditText edtDireccion;
-    private EditText edtEmail;
-    private EditText edtTelefono;
+    private SQLiteDatabase mDatabase;
 
-    private SQLiteDatabase conexion;
-    private DatosOpenHelper datosOpenHelper;
+    private EditText mEditTextNombre;
+    private  EditText mEditTextDireccion;
+    private  EditText mEditTextEmail;
+    private  EditText mEditTextTelefono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_nuevo_cliente);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        edtNombre=(EditText) findViewById(R.id.edtNombre);
-        edtDireccion=(EditText) findViewById(R.id.edtDireccion);
-        edtEmail=(EditText) findViewById(R.id.edtEmail);
-        edtTelefono=(EditText) findViewById(R.id.edtTelefono);
+        FeedReaderDbHelper dbHelper = new FeedReaderDbHelper(this);
+        mDatabase = dbHelper.getWritableDatabase();
+
+        mEditTextNombre = findViewById(R.id.edtNombre);
+        mEditTextDireccion = findViewById(R.id.edtDireccion);
+        mEditTextEmail = findViewById(R.id.edtEmail);
+        mEditTextTelefono = findViewById(R.id.edtTelefono);
     }
 
     @Override
@@ -56,17 +56,20 @@ public class ActNuevoCliente extends AppCompatActivity {
             case R.id.action_ok:
                 if (bCamposCorrectos()){
                     try {
-                        datosOpenHelper=new DatosOpenHelper(this);
-                        conexion= datosOpenHelper.getWritableDatabase();
-                        StringBuilder sql=new StringBuilder();
-                        sql.append("INSERT INTO CLIENTE (NOMBRE, DIRECCION, EMAIL, TELEFONO) VALUES ('");
-                        sql.append(edtNombre.getText().toString().trim() + "', '");
-                        sql.append(edtDireccion.getText().toString().trim() + "', '");
-                        sql.append(edtEmail.getText().toString().trim() + "', '");
-                        sql.append(edtTelefono.getText().toString().trim() + "')");
+                        String name = mEditTextNombre.getText().toString();
+                        String direccion = mEditTextDireccion.getText().toString();
+                        String email = mEditTextEmail.getText().toString();
+                        String telefono = mEditTextTelefono.getText().toString();
 
-                        conexion.execSQL(sql.toString());
-                        conexion.close();
+                        ContentValues cv = new ContentValues();
+
+                        cv.put(FeedReaderContract.FeedEntry.COLUMN_NOMBRE,name);
+                        cv.put(FeedReaderContract.FeedEntry.COLUMN_DIRECCION,direccion);
+                        cv.put(FeedReaderContract.FeedEntry.COLUMN_EMAIL,email);
+                        cv.put(FeedReaderContract.FeedEntry.COLUMN_TELEFONO,telefono);
+
+                        mDatabase.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, cv);
+                        mDatabase.close();
                         finish();
                     }catch (Exception ex){
                         AlertDialog.Builder dlg=new AlertDialog.Builder(this);
@@ -83,10 +86,8 @@ public class ActNuevoCliente extends AppCompatActivity {
                     dlg.show();
                 }
 
-                //Toast.makeText(this,"Boton Ok Seleccionado", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_cancelar:
-                //Toast.makeText(this,"Boton Cancelar Seleccionado",Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -94,20 +95,20 @@ public class ActNuevoCliente extends AppCompatActivity {
 
     private boolean bCamposCorrectos(){
         boolean res=true;
-        if (edtNombre.getText().toString().trim().isEmpty()){
-            edtNombre.requestFocus();
+        if (mEditTextNombre.getText().toString().trim().isEmpty()){
+            mEditTextNombre.requestFocus();
             res=false;
         }
-        if (edtDireccion.getText().toString().trim().isEmpty()){
-            edtDireccion.requestFocus();
+        if (mEditTextDireccion.getText().toString().trim().isEmpty()){
+            mEditTextDireccion.requestFocus();
             res=false;
         }
-        if (edtEmail.getText().toString().trim().isEmpty()){
-            edtEmail.requestFocus();
+        if (mEditTextEmail.getText().toString().trim().isEmpty()){
+            mEditTextEmail.requestFocus();
             res=false;
         }
-        if (edtTelefono.getText().toString().trim().isEmpty()){
-            edtTelefono.requestFocus();
+        if (mEditTextTelefono.getText().toString().trim().isEmpty()){
+            mEditTextTelefono.requestFocus();
             res=false;
         }
         return res;

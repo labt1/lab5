@@ -12,7 +12,7 @@
         <activity
             android:name=".ActNuevoCliente"
             android:label="@string/title_activity_act_nuevo_cliente"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
